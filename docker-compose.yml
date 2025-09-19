@@ -28,8 +28,9 @@ services:
     entrypoint: [ "sh", "-c" ]
     command: >
       "aws dynamodb create-table --table-name tb_proposta_tombamento
-      --attribute-definitions AttributeName=status,AttributeType=S AttributeName=dt_liquidacao,AttributeType=S
-      --key-schema AttributeName=status,KeyType=HASH AttributeName=dt_liquidacao,KeyType=RANGE
+      --attribute-definitions AttributeName=id_proposta,AttributeType=S AttributeName=status,AttributeType=S AttributeName=dt_liquidacao,AttributeType=S
+      --key-schema AttributeName=id_proposta,KeyType=HASH
+      --global-secondary-indexes '[{\"IndexName\": \"status-dt-liquidacao-index\", \"KeySchema\": [{\"AttributeName\": \"status\", \"KeyType\": \"HASH\"}, {\"AttributeName\": \"dt_liquidacao\", \"KeyType\": \"RANGE\"}], \"Projection\": {\"ProjectionType\": \"ALL\"}, \"ProvisionedThroughput\": {\"ReadCapacityUnits\": 5, \"WriteCapacityUnits\": 5}}]'
       --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
       --endpoint-url=http://localstack:4566 --region us-east-1 &&
       echo 'Tabela criada com sucesso: tb_proposta_tombamento'"
